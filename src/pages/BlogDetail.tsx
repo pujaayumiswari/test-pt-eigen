@@ -12,6 +12,7 @@ interface Article {
   publishedAt: string;
   content: string;
   urlToImage: string;
+  url: string;
 }
 
 interface Params {
@@ -27,25 +28,25 @@ export default function BlogDetail() {
     const fetchArticle = async () => {
       try {
         const response = await fetch(
-          `https://newsapi.org/v2/${id}&apiKey=c290a4af7bee461389f677177294a020`
+          `https://newsapi.org/v2/everything?q=tesla&from=2024-01-24&sortBy=publishedAt&apiKey=c290a4af7bee461389f677177294a020`
         );
         if (!response.ok) {
           throw new Error('Failed to fetch article data');
         }
         const data = await response.json();
         if (data.articles && data.articles.length > 0) {
-          
-          const foundArticle = data.articles.find((article: Article) => article.id === id);
+          const foundArticle = data.articles.find((article: Article) => article.url === id);
           if (foundArticle) {
             setArticle(foundArticle);
           } else {
             throw new Error('Article not found');
           }
         } else {
-          throw new Error('Article not found');
+          throw new Error('No articles found');
         }
       } catch (error) {
-        console.error('Error fetching article data:', error);
+        console.error('Error fetching article data:', error.message);
+        setArticle(null);
       } finally {
         setLoading(false);
       }
@@ -92,3 +93,4 @@ export default function BlogDetail() {
     </>
   );
 }
+

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Typography, Card, Row, Col } from 'antd';
+import { Layout, Typography, Card, Row, Col, Carousel } from 'antd';
 import { Link } from 'react-router-dom'; 
+import { CarouselProps } from 'flowbite-react';
 
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
 const { Meta } = Card;
+
 
 interface Article {
   id: string;
@@ -55,6 +57,8 @@ export default function Home() {
             Yumi's Blog
           </Title>
         </Header>
+      </Layout>
+      <Layout>
       </Layout>
 
       <Content style={{ padding: '0 50px', marginTop: 64 }}>
