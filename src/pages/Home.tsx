@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Typography, Card, Row, Col } from 'antd';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom'; 
+
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
 const { Meta } = Card;
 
 interface Article {
+  id: string;
   author: string;
   title: string;
   description: string;
@@ -61,8 +63,7 @@ export default function Home() {
           <Row gutter={[16, 16]}>
             {articles.map((article, index) => (
               <Col key={index} xs={24} sm={12} md={8} lg={8} xl={8}>
-                {/* Gunakan Link untuk mengarahkan ke rute blog detail dengan URL dari data API */}
-                <Link to={`/blogdetail?url=${encodeURIComponent(article.url)}`} style={{ textDecoration: 'none' }}>
+                <Link to={`/blogdetail/${encodeURIComponent(article.url)}`} style={{ textDecoration: 'none' }}>
                   <Card
                     hoverable
                     style={{ height: '100%', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}

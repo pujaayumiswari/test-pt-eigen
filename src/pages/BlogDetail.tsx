@@ -15,12 +15,11 @@ interface Article {
 }
 
 interface Params {
-  url: string;
-  [key: string]: string | undefined;
+  id: string;
 }
 
 export default function BlogDetail() {
-  const { url } = useParams<Params>();
+  const { id } = useParams<Params>();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -28,33 +27,39 @@ export default function BlogDetail() {
     const fetchArticle = async () => {
       try {
         const response = await fetch(
-          `https://newsapi.org/v2/everything?q=tesla&from=2024-01-24&sortBy=publishedAt?url=${encodeURIComponent(url)}&apiKey=c290a4af7bee461389f677177294a020`
+          `https://newsapi.org/v2/${id}&apiKey=c290a4af7bee461389f677177294a020`
         );
         if (!response.ok) {
           throw new Error('Failed to fetch article data');
         }
         const data = await response.json();
         if (data.articles && data.articles.length > 0) {
-          setArticle(data.articles[0]);
+          
+          const foundArticle = data.articles.find((article: Article) => article.id === id);
+          if (foundArticle) {
+            setArticle(foundArticle);
+          } else {
+            throw new Error('Article not found');
+          }
         } else {
           throw new Error('Article not found');
         }
       } catch (error) {
         console.error('Error fetching article data:', error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
     fetchArticle();
-  }, [url]);
+  }, [id]);
 
   if (loading) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   if (!article) {
-    return <div>Article not found</div>; 
+    return <div>Article not found</div>;
   }
 
   return (
